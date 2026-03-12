@@ -164,7 +164,7 @@ npm start
 2. Import the project in Vercel
 3. Configure environment variables
 4. Deploy!
-5. url([Subdomain](https://ntc-ums-frontend.kushalnepal.com.np)
+5. url([Link](https://ntc-ums-frontend.kushalnepal.com.np) )
 
 ## 🤝 Contributing
 
