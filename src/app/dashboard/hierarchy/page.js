@@ -27,7 +27,7 @@ export default function HierarchyPage() {
         fetchHierarchy();
     }, []);
 
-    if (loading) return <div style={{ padding: 28, color: '#e8f0ff' }}>Loading hierarchy...</div>;
+    if (loading) return <SkeletonPage type="hierarchy" />;
 
     const hasData =
         data.domains.length ||

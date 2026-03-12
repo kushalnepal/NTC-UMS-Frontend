@@ -120,7 +120,7 @@ export default function MembersPage() {
         </div>
     );
 
-    if (loading) return <div style={styles.padding}>Loading...</div>;
+    if (loading) return <SkeletonPage type="members" />;
 
     return (
         <div style={styles.padding}>

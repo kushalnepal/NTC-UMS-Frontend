@@ -296,7 +296,7 @@ function MembersPage({ user }) {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <SkeletonPage type="members" />;
 
   // Table styles
   const tableThStyle = {

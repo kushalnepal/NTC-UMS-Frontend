@@ -21,6 +21,7 @@ export default function DashboardPage() {
         wings: [],
         users: [],
     });
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const fetchStats = async () => {
@@ -43,6 +44,8 @@ export default function DashboardPage() {
                 });
             } catch (err) {
                 console.error('Failed to fetch stats:', err);
+            } finally {
+                setIsLoading(false);
             }
         };
         fetchStats();
@@ -79,6 +82,8 @@ export default function DashboardPage() {
         statLabel: { fontSize: 10, color: '#7a9cc6', letterSpacing: 2, marginTop: 6 },
         sectionTitle: { fontSize: 16, color: '#ffcc00', marginBottom: 16, letterSpacing: 1 },
     };
+
+    if (isLoading) return <SkeletonPage type="dashboard" />;
 
     return (
         <div style={styles.content}>

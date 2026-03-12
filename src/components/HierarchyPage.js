@@ -38,7 +38,7 @@ function HierarchyPage() {
     fetchHierarchy();
   }, []);
 
-  if (loading) return <div style={{ padding: 28, color: C.text }}>Loading hierarchy...</div>;
+  if (loading) return <SkeletonPage type="hierarchy" />;
 
   const hasData =
     data.domains.length ||
