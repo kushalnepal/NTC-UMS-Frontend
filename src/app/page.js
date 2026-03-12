@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import { SkeletonPage } from '../components/Skeleton';
 import { useAuth } from '../context/AuthContext';
 
 export default function Home() {
@@ -19,15 +20,6 @@ export default function Home() {
     }, [user, loading, router]);
 
     return (
-        <div style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            minHeight: '100vh',
-            background: '#0a1628',
-            color: '#e8f0ff'
-        }}>
-            Loading...
-        </div>
+        <SkeletonPage type="dashboard" />
     );
 }

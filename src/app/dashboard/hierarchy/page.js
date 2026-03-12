@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { SkeletonPage } from '../../../components/Skeleton';
 import api from '../../../utils/api';
 
 export default function HierarchyPage() {

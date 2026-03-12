@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { SkeletonPage } from '../../../components/Skeleton';
 import { useAuth } from '../../../context/AuthContext';
 import api from '../../../utils/api';
 
