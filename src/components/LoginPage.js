@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { S } from "../styles";
 
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
+
 function LoginPage({ onLogin, onSignup }) {
   const [identifier, setIdentifier] = useState("");
   const [password, setPassword] = useState("");
@@ -18,7 +20,7 @@ function LoginPage({ onLogin, onSignup }) {
     setError("");
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:8000/api/v1/auth/login/", {
+      const response = await fetch(`${API_URL}/auth/login/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -43,13 +45,18 @@ function LoginPage({ onLogin, onSignup }) {
         ? "Admin"
         : "User";
 
+      const userData = {
+        id: payload.user_id,
+        username: payload.username,
+        domains: payload.domains || [],
+        role: userRole,
+      };
+
+      // Save user data to localStorage for session persistence
+      localStorage.setItem("user_data", JSON.stringify(userData));
+
       setTimeout(() => {
-        onLogin({
-          id: payload.user_id,
-          username: payload.username,
-          domains: payload.domains || [],
-          role: userRole,
-        });
+        onLogin(userData);
       }, 1200);
     } catch (err) {
       setError("Invalid credentials");

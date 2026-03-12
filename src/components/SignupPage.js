@@ -156,14 +156,19 @@ export default function SignupPage({ onLogin, onBackToLogin }) {
       setToken(response);
       setSuccess(true);
 
+      const userData = {
+        id: response.user.id,
+        username: response.user.username,
+        email: response.user.email,
+        phone: response.user.phone,
+        role: formData.role_name,
+      };
+
+      // Save user data to localStorage for session persistence
+      localStorage.setItem("user_data", JSON.stringify(userData));
+
       setTimeout(() => {
-        onLogin({
-          id: response.user.id,
-          username: response.user.username,
-          email: response.user.email,
-          phone: response.user.phone,
-          role: formData.role_name,
-        });
+        onLogin(userData);
       }, 1500);
     } catch (err) {
       setError(err.message || "Signup failed");

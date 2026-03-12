@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DashboardPage from "./components/DashboardPage";
 import HierarchyPage from "./components/HierarchyPage";
 import Layout from "./components/Layout";
@@ -13,7 +13,28 @@ export default function App() {
   const [activeNav, setActiveNav] = useState("dashboard");
   const [user, setUser] = useState(null);
 
+  // Check for existing session on mount
+  useEffect(() => {
+    const token = localStorage.getItem("access_token");
+    const userData = localStorage.getItem("user_data");
+
+    if (token && userData) {
+      try {
+        const parsedUser = JSON.parse(userData);
+        setUser(parsedUser);
+        setPage("app");
+      } catch (e) {
+        // Invalid user data, clear storage
+        localStorage.removeItem("access_token");
+        localStorage.removeItem("refresh_token");
+        localStorage.removeItem("user_data");
+      }
+    }
+  }, []);
+
   const handleLogin = (u) => {
+    // Save user data to localStorage for session persistence
+    localStorage.setItem("user_data", JSON.stringify(u));
     setUser(u);
     setPage("app");
   };
@@ -29,6 +50,7 @@ export default function App() {
   const handleLogout = () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
+    localStorage.removeItem("user_data");
     setUser(null);
     setPage("login");
   };

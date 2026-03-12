@@ -1,5 +1,9 @@
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
 
+// Separate base URLs for different API groups
+const AUTH_API_URL = `${API_BASE_URL}/auth`;
+const ORGANIZATION_API_URL = API_BASE_URL;
+
 const getToken = () => {
     if (typeof window !== 'undefined') {
         return localStorage.getItem('access_token');
@@ -53,66 +57,66 @@ export const api = {
 
     // Auth endpoints (use /api/v1/auth/)
     login(credentials) {
-        return this.post('/auth/login/', credentials, API_BASE_URL);
+        return this.post('/login/', credentials, AUTH_API_URL);
     },
 
     signup(data) {
-        return this.post('/auth/signup/', data, API_BASE_URL);
+        return this.post('/signup/', data, AUTH_API_URL);
     },
 
     logout() {
-        return this.post('/auth/logout/', {}, API_BASE_URL);
+        return this.post('/logout/', {}, AUTH_API_URL);
     },
 
     // Hierarchy endpoints (use /api/v1/)
     getDomains() {
-        return this.get('/domains/');
+        return this.get('/domains/', ORGANIZATION_API_URL);
     },
 
     getOrganizations() {
-        return this.get('/organizations/');
+        return this.get('/organizations/', ORGANIZATION_API_URL);
     },
 
     getDepartments() {
-        return this.get('/departments/');
+        return this.get('/departments/', ORGANIZATION_API_URL);
     },
 
     getWings() {
-        return this.get('/wings/');
+        return this.get('/wings/', ORGANIZATION_API_URL);
     },
 
     getHierarchyMembers() {
-        return this.get('/auth/hierarchy-members/');
+        return this.get('/hierarchy-members/', AUTH_API_URL);
     },
 
     // User endpoints (use /api/v1/auth/)
     getUsers() {
-        return this.get('/auth/users/');
+        return this.get('/users/', AUTH_API_URL);
     },
 
     getUser(id) {
-        return this.get(`/auth/users/${id}/`);
+        return this.get(`/users/${id}/`, AUTH_API_URL);
     },
 
     updateUser(id, data) {
-        return this.put(`/auth/users/${id}/`, data);
+        return this.put(`/users/${id}/`, data, AUTH_API_URL);
     },
 
     deleteUser(id) {
-        return this.delete(`/auth/users/${id}/`);
+        return this.delete(`/users/${id}/`, AUTH_API_URL);
     },
 
     // Token endpoints (use /api/v1/auth/token/)
     getTokens() {
-        return this.get('/auth/token/', API_BASE_URL);
+        return this.get('/token/', AUTH_API_URL);
     },
 
     createToken(data) {
-        return this.post('/auth/token/', data, API_BASE_URL);
+        return this.post('/token/', data, AUTH_API_URL);
     },
 
     revokeToken(id) {
-        return this.delete(`/auth/token/${id}/`);
+        return this.delete(`/token/${id}/`, AUTH_API_URL);
     },
 };
 
