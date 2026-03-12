@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1/auth';
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:8000/api/v1';
 
 const getToken = () => {
     if (typeof window !== 'undefined') {
@@ -8,7 +8,7 @@ const getToken = () => {
 };
 
 export const api = {
-    async request(endpoint, options = {}) {
+    async request(endpoint, options = {}, baseUrl = API_BASE_URL) {
         const token = getToken();
         const headers = {
             'Content-Type': 'application/json',
@@ -16,7 +16,7 @@ export const api = {
             ...options.headers,
         };
 
-        const response = await fetch(`${API_BASE_URL}${endpoint}`, {
+        const response = await fetch(`${baseUrl}${endpoint}`, {
             ...options,
             headers,
         });
@@ -29,42 +29,42 @@ export const api = {
         return response.json();
     },
 
-    get(endpoint) {
-        return this.request(endpoint, { method: 'GET' });
+    get(endpoint, baseUrl = API_BASE_URL) {
+        return this.request(endpoint, { method: 'GET' }, baseUrl);
     },
 
-    post(endpoint, data) {
+    post(endpoint, data, baseUrl = API_BASE_URL) {
         return this.request(endpoint, {
             method: 'POST',
             body: JSON.stringify(data),
-        });
+        }, baseUrl);
     },
 
-    put(endpoint, data) {
+    put(endpoint, data, baseUrl = API_BASE_URL) {
         return this.request(endpoint, {
             method: 'PUT',
             body: JSON.stringify(data),
-        });
+        }, baseUrl);
     },
 
-    delete(endpoint) {
-        return this.request(endpoint, { method: 'DELETE' });
+    delete(endpoint, baseUrl = API_BASE_URL) {
+        return this.request(endpoint, { method: 'DELETE' }, baseUrl);
     },
 
-    // Auth endpoints
+    // Auth endpoints (use /api/v1/auth/)
     login(credentials) {
-        return this.post('/login/', credentials);
+        return this.post('/auth/login/', credentials, API_BASE_URL);
     },
 
     signup(data) {
-        return this.post('/signup/', data);
+        return this.post('/auth/signup/', data, API_BASE_URL);
     },
 
     logout() {
-        return this.post('/logout/', {});
+        return this.post('/auth/logout/', {}, API_BASE_URL);
     },
 
-    // Hierarchy endpoints
+    // Hierarchy endpoints (use /api/v1/)
     getDomains() {
         return this.get('/domains/');
     },
@@ -82,37 +82,37 @@ export const api = {
     },
 
     getHierarchyMembers() {
-        return this.get('/hierarchy-members/');
+        return this.get('/auth/hierarchy-members/');
     },
 
-    // User endpoints
+    // User endpoints (use /api/v1/auth/)
     getUsers() {
-        return this.get('/users/');
+        return this.get('/auth/users/');
     },
 
     getUser(id) {
-        return this.get(`/users/${id}/`);
+        return this.get(`/auth/users/${id}/`);
     },
 
     updateUser(id, data) {
-        return this.put(`/users/${id}/`, data);
+        return this.put(`/auth/users/${id}/`, data);
     },
 
     deleteUser(id) {
-        return this.delete(`/users/${id}/`);
+        return this.delete(`/auth/users/${id}/`);
     },
 
-    // Token endpoints
+    // Token endpoints (use /api/v1/auth/token/)
     getTokens() {
-        return this.get('/tokens/');
+        return this.get('/auth/token/', API_BASE_URL);
     },
 
     createToken(data) {
-        return this.post('/tokens/', data);
+        return this.post('/auth/token/', data, API_BASE_URL);
     },
 
     revokeToken(id) {
-        return this.delete(`/tokens/${id}/`);
+        return this.delete(`/auth/token/${id}/`);
     },
 };
 
